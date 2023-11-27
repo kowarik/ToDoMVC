@@ -1,0 +1,24 @@
+﻿@model TaskItem
+
+@{
+    ViewData["Title"] = "Delete Task";
+}
+
+<h1>@ViewData["Title"]</h1>
+
+<h3>Are you sure you want to delete this task?</h3>
+<div>
+    <h4>@Model.Name</h4>
+</div>
+
+<form asp-action="DeleteConfirmed" method="post">
+    <input type="hidden" asp-for="Id" />
+    <div class="form-group">
+        <input type="submit" value="Delete" class="btn btn-danger" />
+    </div>
+    @Html.AntiForgeryToken()
+</form>
+
+<div>
+    <a asp-action="GetAll">Back to Task List</a>
+</div>

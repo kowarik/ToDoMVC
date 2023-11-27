@@ -1,0 +1,24 @@
+﻿@model TaskItem
+
+@{
+    ViewData["Title"] = "Edit Task";
+}
+
+<h1>@ViewData["Title"]</h1>
+
+<form asp-action="Edit" method="post">
+    <input type="hidden" asp-for="Id" />
+    <div class="form-group">
+        <label asp-for="Name" class="control-label"></label>
+        <input asp-for="Name" class="form-control" />
+        <span asp-validation-for="Name" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <input type="submit" value="Save" class="btn btn-primary" />
+    </div>
+    @Html.AntiForgeryToken()
+</form>
+
+<div>
+    <a asp-action="GetAll">Back to Task List</a>
+</div>

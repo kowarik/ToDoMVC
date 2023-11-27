@@ -1,0 +1,63 @@
+﻿@model IEnumerable<TaskItem>
+
+@{
+    ViewData["Title"] = "All Tasks";
+}
+
+<h1>@ViewData["Title"]</h1>
+
+<p>
+    <a asp-action="Create" class="btn btn-primary">Add New Task</a>
+</p>
+
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="GetAll" method="get">
+            <div class="col">
+                <input type="text" name="searchString" value="@ViewBag.NameSearchString" class="form-control" placeholder="Search by name..." />
+            </div>
+            <div class="col">
+                <input type="submit" value="Search" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                <a asp-action="GetAll" asp-route-sortOrder="@ViewBag.NameSortOrder" asp-route-searchString="@ViewBag.NameSearchString">Name</a>
+            </th>
+            <th>
+                <a asp-action="GetAll" asp-route-sortOrder="@ViewBag.StatusSortOrder">Status</a>
+            </th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td><a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-secondary">@item.Name</a></td>
+                <td>
+                    <div class="d-flex align-items-center">
+                        <form asp-action="ToggleStatus" asp-route-id="@item.Id" method="post">
+                            <input type="hidden" asp-for="@item.Id" />
+                            <div class="form-check">
+                                <input type="checkbox" class="form-check-input" @(item.IsCompleted ? "checked" : "") onchange="this.form.submit()">
+                            </div>
+                            @Html.AntiForgeryToken()
+                        </form>
+                        <label class="@(item.IsCompleted ? "text-success" : "text-danger")">
+                            @(item.IsCompleted ? "Done" : "Not done")
+                        </label>
+                    </div>
+                </td>
+                <td>
+                    <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
